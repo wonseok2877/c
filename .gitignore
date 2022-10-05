@@ -1,2 +1,3 @@
-*.out
+/basics/*.out
+/practices/*.out
 .clangd
