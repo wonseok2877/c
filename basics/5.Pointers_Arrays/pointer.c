@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 
 int main() {
   /* 1. pointer declaration
@@ -112,6 +113,76 @@ int main() {
   p = v = d;
   printf("p : %p\t d:%p\t v : %p\n", p, d, v);
   printf("*d : %f\t *p : %i\n", *d, *p);
+
+  /* pointer 연산
+   * */
+
+  int a[] = {5,15,25,43,12,1,7,89,32,11};
+
+  printf("a:%p\n", a);
+  p = a + 2;
+  q = p + 3;
+  printf("p : %p\t *p: %i\t q:%p\t *q:%i\n", p, *p, q, *q);
+  p += 6;
+  printf("p : %p\t *p: %i\t q:%p\t *q:%i\n", p, *p, q, *q);
+
+  p = &a[8];
+  q = p - 3;
+    printf("p : %p\t *p: %i\t q:%p\t *q:%i\n", p, *p, q, *q);
+
+  p -= 6;
+    printf("p : %p\t *p: %i\t q:%p\t *q:%i\n", p, *p, q, *q);
+
+    p = &a[1], q=&a[5];
+
+    printf("1. %i\n", *(p+3) );
+        printf("2. %i\n", *(q-2));
+    printf("3. %lu\n", q-p);
+        printf("4. %i\n", p>q);
+    printf("5. %i\n", *p>*q);
+
+
+        printf("%lu \n",  (uintptr_t)q - (uintptr_t)p );
+
+
+    printf("p : %p\t *p: %i\t q:%p\t *q:%i\n", p, *p, q, *q);
+  printf("%lu\n", p-q);
+
+    p =a+5, q=a+1;
+        printf("p : %p\t *p: %i\t q:%p\t *q:%i\n", p, *p, q, *q);
+  printf("p-q = %lu\n", p-q);
+
+    double b[2], *e,*f;
+    e=&b[0];
+    f=e+1;
+
+    printf("%lu\n", f-e);
+    // https://stackoverflow.com/questions/26805461/why-do-i-get-cast-from-pointer-to-integer-of-different-size-error
+    printf("%lu\n",  (uintptr_t)f - (uintptr_t)e );
+    printf("%lu\n", sizeof(double));
+
+    int c[3] = {20, 7,-9}, w;
+    p = &c[1];
+    w= *p++;
+    printf("%d %d \n", w,*p);
+
+      p = &c[1];
+    w= *++p;
+    printf("%d %d \n", w,*p);
+
+      p = &c[1];
+    w=++*p;
+    printf("%d %d \n", w,*p);
+
+      p = &c[1];
+    w=(*p)++;
+    printf("%d %d \n", w,*p);
+
+    char mychar='a', *pc = &mychar;
+
+    *pc='a';
+
+    printf("%c \n", *pc);
 
   return 0;
 }
