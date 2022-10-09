@@ -22,11 +22,22 @@ void shellsort(int v[], int n) {
       }
     }
   }
+  printf("v is pointing to=%p\n", v);
+  int new_arr[] = {1};
+  v=new_arr;
+    printf("v is pointing to=%p\n", v);
+
 }
 
 int main() {
 
   int arr[] = {10, 1, 49, 100, 6, 34};
+
+    printf("arr is pointing to=%p\n", arr);
+
+    for (int i = 0; i < sizeof arr / sizeof arr[0]; i++) {
+    printf("%i\n", arr[i]);
+  }
 
   shellsort(arr, sizeof arr / sizeof arr[0]);
 

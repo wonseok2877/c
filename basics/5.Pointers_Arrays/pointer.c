@@ -10,6 +10,11 @@ int main() {
   float *fp;
   char *ch;
 
+    printf("=====Address stored in ip variable: %p\n", ip);
+    /* initialize 안 된 상태에서 사용 금지. */
+    /* *ip = 1; */
+  /* printf("=====Value ip variable pointing to: %i\n", *ip); */
+
   int var = 20;
   /* 2. refer to address
    * & operator

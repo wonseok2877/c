@@ -18,7 +18,8 @@ int main() {
 
   /* malloc
    * int type size의 4배만큼 memeory allocation 하고,
-   * malloc의 디폴트 반환형이 void* 이므로 int *로 형변환 후 할당 */
+   * malloc의 디폴트 반환형이 void* 이므로 int *로 형변환 후 할당 
+   * malloc은 단순히 메모리만 할당하는 함수이기 때문에 개발자가 어떠한 데이터 형을 저장하는지 예측할 수 없기 때문이다. */
   int *pArr = (int *)malloc(sizeof(int) * 8);
 
   if (pArr == NULL)
@@ -37,10 +38,27 @@ int main() {
 
   /* system("pause"); */
 
-  char *c = (char *)malloc(1); // 1바이트 메모리 할당
+  char *c = (char *)malloc(sizeof(char)); // 1바이트 메모리 할당
   *c = 'h';
   printf("%p, %c\n", c, *c); // c의 주소값, c의 값 'h'
   free(c);                   //메모리 해제
+                             
+  int *a,i,n,sum = 0;
+
+  printf("input an array size n : ");
+  scanf("%d",&n);
+
+  a=calloc(n, sizeof(int));
+
+  for (i=0; i<n; ++i)
+      scanf("%d", &a[i]);
+
+  for (i=0; i<n; ++i)
+      sum += a[i];
+
+  free(a);
+
+  printf("\n Number of elements : %7d \n Sum of elements : %7d\n\n", n,sum);
 
   return 0;
 }

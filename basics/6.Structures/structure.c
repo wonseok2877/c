@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
+// https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BC%5D%20%EA%B5%AC%EC%A1%B0%EC%B2%B4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%ED%81%AC%EA%B8%B0%20%EA%B3%84%EC%82%B0.md
+
 // Structures (also called structs) are a way to group several related variables
 // into one place. Each variable in the structure is known as a member of the
 // structure.
@@ -37,23 +39,37 @@ struct Rectangle {
 };
 
 /* make_point : make a Point data from x and y arguments */
-struct Point make_point(int x,int y){
-struct Point temp;
-temp.x=x, temp.y=y;
-return temp;
+struct Point make_point(int x, int y) {
+  struct Point temp;
+  temp.x = x, temp.y = y;
+  return temp;
 }
 
-struct Point add_point (struct Point pt1,struct Point pt2){
-pt1.x += pt2.x;
-pt1.y += pt2.y;
-return pt1;
+struct Point add_point(struct Point pt1, struct Point pt2) {
+  pt1.x += pt2.x;
+  pt1.y += pt2.y;
+  return pt1;
 }
 
-/* ptinrec : return 1 if p in r, 0 if not 
+/* ptinrec : return 1 if p in r, 0 if not
  * pt1과 pt2 좌표가 작은 순서대로 있어야 작동ㅋㅋ */
-int ptinrec(struct Point pt, struct Rectangle rec){
-int is = pt.x >= rec.pt1.x && pt.x <= rec.pt2.x && pt.y >= rec.pt1.y && pt.y <= rec.pt2.y;
-return is;
+int ptinrec(struct Point pt, struct Rectangle rec) {
+  int is = pt.x >= rec.pt1.x && pt.x <= rec.pt2.x && pt.y >= rec.pt1.y &&
+           pt.y <= rec.pt2.y;
+  return is;
+}
+
+void scan_struct(){
+struct {
+int number;
+char name[20];
+}part1;
+
+scanf("%d", &part1.number);
+scanf("%s", part1.name);
+
+printf("\n %d\t %s \n", part1.number, part1.name);
+
 }
 
 int main() {
@@ -79,6 +95,11 @@ int main() {
   printf("%s %s %d\n", car2.brand, car2.model, car2.year);
   printf("%s %s %d\n", car3.brand, car3.model, car3.year);
 
+  /* type compatiblility */
+    car1=car2;
+  printf("%s %s %d\n", car1.brand, car1.model, car1.year);
+
+  /* car1=s1; */
   // Dot(.) has higher precednece then &
   printf("%p \n", &car1.year);
 
@@ -93,41 +114,75 @@ int main() {
 
   struct Rectangle r = {{5, 0}, {8, 8}};
 
-  printf("(%i,%i) , (%i,%i) \n", r.pt1.x , r.pt1.y, r.pt2.x, r.pt2.y);
+  printf("(%i,%i) , (%i,%i) \n", r.pt1.x, r.pt1.y, r.pt2.x, r.pt2.y);
 
   /* copy a structure */
-struct Rectangle copied = r;
-  printf("(%i,%i) , (%i,%i) \n", copied.pt1.x , copied.pt1.y, copied.pt2.x, copied.pt2.y);
+  struct Rectangle copied = r;
+  printf("(%i,%i) , (%i,%i) \n", copied.pt1.x, copied.pt1.y, copied.pt2.x,
+         copied.pt2.y);
 
   /* structure can't be compared */
   /* printf("is they same ?... %i \n", r==copied); */
 
   struct Point p4 = make_point(0, 8);
-    double dist4 = sqrt((double)p4.x * p4.x + (double)p4.y * p4.y);
+  double dist4 = sqrt((double)p4.x * p4.x + (double)p4.y * p4.y);
 
   printf("distance=%lf\n", dist4);
 
-  struct Rectangle s ;
+  struct Rectangle s;
   s.pt1 = make_point(1, 39);
   s.pt2 = make_point(4, 10);
 
-    printf("(%i,%i) , (%i,%i) \n", s.pt1.x , s.pt1.y, s.pt2.x, s.pt2.y);
+  printf("(%i,%i) , (%i,%i) \n", s.pt1.x, s.pt1.y, s.pt2.x, s.pt2.y);
 
-    struct Point result = add_point(p1, p2);
-      printf("x=%i\t y=%i\n", result.x, result.y);
+  struct Point result = add_point(p1, p2);
+  printf("x=%i\t y=%i\n", result.x, result.y);
 
-      printf("is in : %i\n", ptinrec( p4, r));
+  printf("is in : %i\n", ptinrec(p4, r));
 
-      struct Point * Pp = &result;
+  struct Point *Pp = &result;
+
+  /* member operator
+   * . 연산자가 * 연산자보다 높기 때문에 ()를 써야 한다.
+   * -> 연산자를 주로 쓴다. */
+  printf("Pp=%p\t Pp->x=%i\t Pp->y=%i\n", Pp, (*Pp).x, Pp->y);
+
+  struct Rectangle *rp = &r;
+
+  printf("%i %i %i %i\n", r.pt1.x, rp->pt1.x, (r.pt1).x, (rp->pt1).x);
+
+  /* sizeof structure*/
+    printf("%lu %lu %lu\n", sizeof p1.x, sizeof p1.y, sizeof p1);
+    printf("%lu %lu %lu\n", sizeof r.pt1, sizeof r.pt2, sizeof r);
+    printf("%lu %lu %lu %lu\n", sizeof car1.brand, sizeof car1.model, sizeof car1.year, sizeof car1);
+
+    /* struct pointer */
+    struct Point *a=&p1, *b=&p2;
     
-      /* member operator
-       * . 연산자가 * 연산자보다 높기 때문에 ()를 써야 한다.
-       * -> 연산자를 주로 쓴다.*/
-      printf("Pp=%p\t Pp->x=%i\t Pp->y=%i\n", Pp, (*Pp).x, Pp->y);
+        printf("%i %i\n", p2.x, p2.y);
 
-      struct Rectangle *rp = &r;
-        
-      printf("%i %i %i %i\n", r.pt1.x, rp->pt1.x, (r.pt1).x, (rp->pt1).x);
+        printf("%i %i\n", a->x, a->y);
+    a->x = b->x ;
+    a->y = b->y ;
+
+    printf("%i %i\n", a->x, a->y);
+
+    struct Shape {
+    int x,y;
+    } sh = {12,23};
+
+    struct Shape  *p=&sh;
+        printf("%i %i\t %i %i\n", p->x, sh.x, p->y, sh.y);
+
+    sh.x = p->x * 2;
+    p->y = sh.y %5;
+
+
+    printf("%i %i\t %i %i\n", p->x, sh.x, p->y, sh.y);
+
+        printf("%p %p %p %p\n", &(*p).x, &((*p).x), &p->x, &(p->x));
+        printf("%p %p \n", &sh.x, &(sh.x));
+
 
   return 0;
 }
