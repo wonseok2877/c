@@ -3,11 +3,15 @@
 
 #define MAX_STACK_SIZE 10
 
+/* stack을 전역 변수(array stack, top을 나타내는 int 변수)로 구현 */
 typedef int element;
-element stack[MAX_STACK_SIZE];
-int top = -1;
+
+
+element stack[MAX_STACK_SIZE];  // element type의 stack array
+int top = -1;                   // top 변수
 
 void push(element item) {
+    // 조건 : is full
   if (top >= MAX_STACK_SIZE - 1) {
     fprintf(stderr, "stack overflow!\n");
     exit(1);
@@ -18,6 +22,7 @@ void push(element item) {
 }
 
 element pop() {
+    // 조건 : is empty
   if (top == -1) {
     fprintf(stderr, "stack underflow!\n");
     exit(1);
@@ -28,9 +33,10 @@ element pop() {
 }
 
 element peek() {
+      // 조건 : is empty
   if (top == -1) {
-    fprintf(stderr, "stack underflow!");
-    exit(1);
+    fprintf(stderr, "stack is empty!");
+exit(1);
 
   } else
     return stack[top];
@@ -72,4 +78,5 @@ int main() {
   printf("pop: top=%i\n", pop());
   printStack();
   printf("pop: top=%i\n", pop());
+  pop();
 }
