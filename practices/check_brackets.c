@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#define MAX_STACK_SIZE 10
+#define MAX_STACK_SIZE 20
 
-/* stack을 structure로 구현 */
 typedef int element;
-
 typedef struct {
-  element data[MAX_STACK_SIZE];
-  int top;
-} Stack;
+element data[MAX_STACK_SIZE];
+int top;
+}Stack;
 
 /* is_empty : 공백 상태*/
 int is_empty(Stack *s) { return (s->top == -1); }
@@ -41,24 +40,33 @@ element pop(Stack *s) {
         ->data[(s->top)--]; // stack의 맨위 위치 데이터를 반환한 후, top을 -1
 }
 
-element peek(Stack *s) {
-  if (is_empty(s)) {
-    fprintf(stderr, "stack 공백임!\n");
-    exit(1);
-  } else
-    return s->data[s->top];
+int check_brackets(const char *expr){
+    Stack s;
+        s.top = -1;
+
+    char ch, left_br;
+    int length = strlen(expr);
+    
+    for (int i = 0; i < length; i++){
+    ch = expr[i]; // i번째 문자
+    switch (ch) {
+        case '(':case '[': case '{': // 왼쪽 괄호인 경우 push
+            push(&s, ch);
+            break;
+        case ')': case ']': case '}' : // 오른쪽 괄호인 경우
+            if (is_empty(s) ){
+            fprintf(stderr, "꽉 참");
+            return 0;
+            }else {
+            left_br = pop(&s); // 해당하는 왼쪽 괄호를 pop
+            if ( (left_br == ) )
+            }
+    }
+    }
 }
 
-int main() {
-// initialize
-  Stack first_stack;
-  first_stack.top = -1;
+int main(){
+Stack my_stack;
+my_stack.top = -1;
 
-  push(&first_stack, 100);
-  push(&first_stack, 200);
-  push(&first_stack, 300);
-  printf("%i\n", peek(&first_stack));
-  printf("%i\n", pop(&first_stack));
-  printf("%i\n", pop(&first_stack));
-  printf("%i\n", pop(&first_stack));
 }
