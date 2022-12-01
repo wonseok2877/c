@@ -6,7 +6,6 @@
 /* stack을 전역 변수(array stack, top을 나타내는 int 변수)로 구현 */
 typedef int element;
 
-
 element stack[MAX_STACK_SIZE];  // element type의 stack array
 int top = -1;                   // top 변수
 

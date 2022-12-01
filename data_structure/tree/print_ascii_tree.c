@@ -49,35 +49,6 @@ TNode *find(int elem, TNode *t) {
   
 }
 
-TNode *delete (int value, TNode *t) {
-  // Deletes node from the tree
-  //  Return a pointer to the resulting tree
-  TNode *x;
-  TNode *tmp_cell;
-
-  if (t == NULL)
-    return NULL;
-
-  if (value < t->data) {
-    t->left = delete (value, t->left);
-  } else if (value > t->data) {
-    t->right = delete (value, t->right);
-  } else if (t->left && t->right) {
-    tmp_cell = find_min(t->right);
-    t->data= tmp_cell->data;
-    t->right = delete (t->data, t->right);
-
-  } else {
-    tmp_cell = t;
-    if (t->left == NULL)
-      t = t->right;
-    else if (t->right == NULL)
-      t = t->left;
-    free(tmp_cell);
-  }
-
-  return t;
-}
 
 /*printing tree in ascii
 */

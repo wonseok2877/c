@@ -12,10 +12,15 @@
  *      탐색 : 주어진 탐색 키 값과 현재의 루트 노드 키 값을 비교
  *              비교결과에 따라 왼쪽, 오른쪽 서브트리로 반복 순환
  *              같을 경우 찾은 것이므로 해당 값을 반환.
+ *      삽입
+ *      삭제
  *
+ * 시간복잡도(탐색, 삽입, 삭제)
+ *      트리의 높이를 h라고 했을 때 O(h).
+ *      좌우 균형적인 트리인 경우 O(log2h)
+ *      편향적인 트리의 경우 O(h).
  * */
-
-// print_ascii_tree랑 같이 컴파일 해야 함.
+// NOTE : print_ascii_tree랑 같이 컴파일 해야 함.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +34,6 @@ typedef struct TreeNode {
 extern void print_ascii_tree(TNode *t);
 extern TNode *find_min(TNode *t);
 extern TNode *find_max(TNode *t);
-extern TNode *delete (int value, TNode *t);
 
 // 노드 생성 함수
 TNode *createNode(int item, TNode *left, TNode *right) {
@@ -58,7 +62,7 @@ TNode *search(TNode *node, int key) {
 
     // 탐색할 key와 node->data 비교
     if (key == node->data) {
-      printf("found!\n");
+      printf("%i found!\n", node->data);
       return node;
     } else if (key < node->data)
       return search(node->left, key);
@@ -74,6 +78,8 @@ TNode *search(TNode *node, int key) {
  * 1. 탐색 --> 값이 같은지 계속 비교.
  *      같은 값이 없고 탐색에 실패는 조건 충족. 따라서 노드 생성 및 링크 연결.
         탐색 키와 노드 키 값이 크거나 작을 경우에 따라 순회.
+2. 탐색 실패(삽입 관점에선 성공) --> 조건을 충족했으므로 노드 생성 후 key값
+할당.
  */
 TNode *insert(TNode *node, int key) {
   // 노드가 공백일 경우 새로운 노드 생성, 반환
@@ -86,6 +92,7 @@ TNode *insert(TNode *node, int key) {
   else if (key > node->data)
     node->right = insert(node->right, key);
 
+  // 중복은 무시
   return node;
 }
 
@@ -99,7 +106,7 @@ TNode *insert_loop(TNode *node, int item) {
     parent = node;
     // 탐색할 key와 node->data 비교
     if (item == node->data) {
-      printf("duplicated!\n");
+      printf(":( duplicated!\n");
       return NULL;
     } else if (item < node->data)
       node = node->left;
@@ -136,36 +143,38 @@ TNode *insert_loop(TNode *node, int item) {
  *      그리고 나름의 로직을 통해 둘 중 하나를 후계자로 선택. (상관 없음)
  *
  * */
-TNode *delete_my(TNode *node, int key) {
-  if (node == NULL)
+TNode *delete (TNode *node, int key) {
+  // 공백노드일 경우는 해당 key가 트리안에 없는 것. NULL 반환
+  if (node == NULL) {
+    printf(":( not found!");
     return NULL;
+  }
 
+  TNode *temp;
   // 탐색
   if (key < node->data)
-    node->left = delete_my(node->left, key);
+    node->left = delete (node->left, key);
   else if (key > node->data)
-    node->right = delete_my(node->right, key);
-  // 탐색 key와 노드 key가 같으면 탐색 완료.
+    node->right = delete (node->right, key);
+  // 탐색 key와 노드 key가 같음. 즉 탐색 완료.
   else {
     // 1번째 경우, 단말노드이므로 temp = NULL
     // 2번째 경우, temp = 하나의 서브루트 노드
     if (node->left == NULL) {
-      TNode *temp = node->right;
+      temp = node->right;
       free(node);
       return temp;
     } else if (node->right == NULL) {
-      TNode *temp = node->left;
+      temp = node->left;
       free(node);
       return temp;
-      // 3번째 경우
+      // 3번째 경우, node 양쪽에 서브루트를 갖는다.
     } else {
-      // 오른쪽 서브트리에서 가장 작은 값을 가진 노드를 할당
+      // 중간값 (여기선 오른쪽 서브트리에서 가장 작은 값)을 가진 노드를 할당
       TNode *temp = find_min(node->right);
       // 중위순회 시 후계 노드를 복사, 삭제
-            printf("===============%i %i \n", node->data, node->right->data);
       node->data = temp->data;
-      node->right = delete_my(node->right, temp->data);
-      printf("=================%i %i \n", node->data, node->right->data);
+      node->right = delete (node->right, temp->data);
     }
   }
   return node;
@@ -191,15 +200,39 @@ int main() {
 
   print_ascii_tree(myTree);
 
-  int target1, target2, target3;
-  scanf("%i %i %i", &target1, &target2, &target3);
-  TNode *result = search(myTree, target1);
+  int target;
+  char mode;
+  printf("##########################\n");
+  printf("PRESS...\n\
+          s : search\n\
+          i : insert\n\
+          d : delete\n\
+          p : print tree\n\
+          q : quit\n");
+  printf("##########################\n");
 
-  TNode *new1 = insert(myTree, target2);
-  print_ascii_tree(myTree);
-
-  delete (target3, myTree);
-  print_ascii_tree(myTree);
-
+  while (scanf(" %c", &mode) && mode !='q') {
+    printf("TARGET : ");
+    switch (mode) {
+    case 'p':
+      printf("\n");
+      print_ascii_tree(myTree);
+      break;
+    case 's':
+      scanf("%i", &target);
+      TNode *result = search(myTree, target);
+      break;
+    case 'i':
+      scanf("%i", &target);
+      TNode *new1 = insert(myTree, target);
+      break;
+    case 'd':
+      scanf("%i", &target);
+      delete (myTree, target);
+      break;
+    default:
+      exit(0);
+    }
+  }
   return 0;
 }
