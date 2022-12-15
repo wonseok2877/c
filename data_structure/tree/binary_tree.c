@@ -223,12 +223,10 @@ int getHeight(TNode *node){
 int main() {
   TNode *n1, *n2, *n3, *n4, *n5, *n6, *n7, *n8, *n9;
 
-  n9 = createNode(90, NULL, NULL);
-n8 = createNode(80, NULL, NULL);
   n7 = createNode(70, NULL, NULL);
   n6 = createNode(60, NULL, NULL);
   n5 = createNode(50, NULL, NULL);
-  n4 = createNode(40, n8, n9);
+  n4 = createNode(40, NULL, NULL);
   n3 = createNode(30, n6, n7);
   n2 = createNode(20, n4, n5);
   n1 = createNode(10, n2, n3);
